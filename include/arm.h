@@ -7,6 +7,27 @@
 #include <string>
 #include <sstream>
 
+
+
+#ifdef WIN32
+// 以下の ifdef ブロックは DLL からのエクスポートを容易にするマクロを作成するための 
+// 一般的な方法です。この DLL 内のすべてのファイルは、コマンド ラインで定義された LIBARM_EXPORTS
+// シンボルでコンパイルされます。このシンボルは、この DLL を使うプロジェクトで定義することはできません。
+// ソースファイルがこのファイルを含んでいる他のプロジェクトは、 
+// LIBARM_API 関数を DLL からインポートされたと見なすのに対し、この DLL は、このマクロで定義された
+// シンボルをエクスポートされたと見なします。
+#ifdef LIBARM_EXPORTS
+#define LIBARM_API __declspec(dllexport)
+#else
+#define LIBARM_API __declspec(dllimport)
+#endif
+
+#else // ifdef WIN32
+#define LIBARM_API 
+
+#endif // ifdef WIN32
+
+
 //typedef double[3][4] HgMatrix;
 struct Vector3 {
   double v[3];
